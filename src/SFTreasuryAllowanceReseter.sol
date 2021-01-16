@@ -1,10 +1,11 @@
-pragma solidity ^0.6.7;
+pragma solidity 0.6.7;
 
 abstract contract StabilityFeeTreasuryLike {
-    function getAllowance(address) public view returns (uint256, uint256);
-    function setTotalAllowance(address, uint256) external;
+    function getAllowance(address) virtual public view returns (uint256, uint256);
+    function setTotalAllowance(address, uint256) virtual external;
 }
 contract SFTreasuryAllowanceReseter {
+    // --- Variables ---
     StabilityFeeTreasuryLike public treasury;
 
     // --- Events ---
@@ -16,10 +17,9 @@ contract SFTreasuryAllowanceReseter {
     }
 
     function resetTotalAllowance(address account) external {
-        (, uint perBlockAllowance) = treasury.getAllowance();
-        if (perBlockAllowance > 0) {
-          treasury.setTotalAllowance(account, uint(-1));
-        }
+        (, uint perBlockAllowance) = treasury.getAllowance(account);
+        require(perBlockAllowance > 0, "SFTreasuryAllowanceReseter/null-per-block-allowance");
+        treasury.setTotalAllowance(account, uint(-1));
         emit ResetTotalAllowance(account);
     }
 }
