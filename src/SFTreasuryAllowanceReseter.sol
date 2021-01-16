@@ -7,6 +7,9 @@ abstract contract StabilityFeeTreasuryLike {
 contract SFTreasuryAllowanceReseter {
     StabilityFeeTreasuryLike public treasury;
 
+    // --- Events ---
+    event ResetTotalAllowance(address account);
+
     constructor(address treasury_) public {
         require(treasury_ != address(0), "SFTreasuryAllowanceReseter/null-treasury");
         treasury = StabilityFeeTreasuryLike(treasury_);
