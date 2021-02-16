@@ -16,6 +16,9 @@ contract SFTreasuryAllowanceReseter {
         treasury = StabilityFeeTreasuryLike(treasury_);
     }
 
+    /*
+    * @notify Reset the total allowance for an address that has a positive perBlock allowance
+    */
     function resetTotalAllowance(address account) external {
         (, uint perBlockAllowance) = treasury.getAllowance(account);
         require(perBlockAllowance > 0, "SFTreasuryAllowanceReseter/null-per-block-allowance");
